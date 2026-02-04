@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fecdd3">
+  <title>Be My Valentine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #fff1f2 0%, #fce7f3 50%, #fdf2f8 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient background orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: #fda4af;
+      top: -100px;
+      right: -100px;
+      animation: float-orb 20s ease-in-out infinite;
+    }
+
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: #f9a8d4;
+      bottom: -50px;
+      left: -50px;
+      animation: float-orb 25s ease-in-out infinite reverse;
+    }
+
+    .orb-3 {
+      width: 200px;
+      height: 200px;
+      background: #fecdd3;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse-orb 15s ease-in-out infinite;
+    }
+
+    @keyframes float-orb {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, 30px); }
+    }
+
+    @keyframes pulse-orb {
+      0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    /* Floating hearts */
+    .hearts-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .floating-heart {
+      position: absolute;
+      bottom: -50px;
+      font-size: 24px;
+      opacity: 0;
+      animation: float-up linear infinite;
+    }
+
+    @keyframes float-up {
+      0% {
+        opacity: 0;
+        transform: translateY(0) rotate(0deg) scale(0.5);
+      }
+      10% {
+        opacity: 0.7;
+      }
+      90% {
+        opacity: 0.7;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-100vh) rotate(360deg) scale(1);
+      }
+    }
+
+    /* Card styles */
+    .card {
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 24px;
+      padding: 48px 40px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 10px 15px -3px rgba(0, 0, 0, 0.05),
+        0 25px 50px -12px rgba(190, 18, 60, 0.15);
+      animation: card-appear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+    }
+
+    @keyframes card-appear {
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .card-hidden {
+      display: none;
+    }
+
+    /* Typography */
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      color: #881337;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+
+    .subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: #9f1239;
+      opacity: 0.8;
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+
+    /* Buttons */
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    @media (min-width: 400px) {
+      .buttons {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+
+    .btn {
+      position: relative;
+      padding: 14px 32px;
+      font-family: 'Outfit', system-ui, sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+      color: white;
+      box-shadow: 0 4px 14px -3px rgba(225, 29, 72, 0.5);
+    }
+
+    .btn-yes:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px -3px rgba(225, 29, 72, 0.6);
+    }
+
+    .btn-yes::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-yes:hover::before {
+      opacity: 1;
+    }
+
+    .btn-yes span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-no {
+      background: rgba(255, 255, 255, 0.8);
+      color: #9f1239;
+      border: 1px solid rgba(225, 29, 72, 0.2);
+    }
+
+    .btn-no:hover {
+      background: rgba(255, 241, 242, 0.9);
+    }
+
+    /* Love screen */
+    .love-screen {
+      display: none;
+      animation: love-appear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .love-screen.active {
+      display: block;
+    }
+
+    @keyframes love-appear {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .love-emoji {
+      font-size: 72px;
+      margin-bottom: 20px;
+      display: inline-block;
+      animation: bounce 1s ease-in-out infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .love-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #881337;
+      margin-bottom: 8px;
+    }
+
+    .love-subtitle {
+      font-size: 18px;
+      color: #9f1239;
+      opacity: 0.9;
+    }
+
+    /* Question screen */
+    .question-screen {
+      display: block;
+    }
+
+    .question-screen.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Floating hearts -->
+  <div class="hearts-container" id="heartsContainer"></div>
+
+  <!-- Main card -->
+  <div class="card">
+    <!-- Question screen -->
+    <div class="question-screen" id="questionScreen">
+      <h1 class="title">Will You Be My Valentine?</h1>
+      <p class="subtitle">I have something special to ask you...</p>
+      <div class="buttons">
+        <button class="btn btn-yes" id="yesBtn" onclick="showLove()">
+          <span>Yes!</span>
+        </button>
+        <button class="btn btn-no" id="noBtn">No</button>
+      </div>
+    </div>
+
+    <!-- Love screen -->
+    <div class="love-screen" id="loveScreen">
+      <div class="love-emoji">💖</div>
+      <h2 class="love-title">Yay!</h2>
+      <p class="love-subtitle">I knew you'd say yes!</p>
+    </div>
+  </div>
+
+  <script>
+    // Create floating hearts
+    function createHearts() {
+      const container = document.getElementById('heartsContainer');
+      const hearts = ['💕', '💗', '💖', '💘', '❤️', '💓'];
+      
+      for (let i = 0; i < 15; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.fontSize = (16 + Math.random() * 16) + 'px';
+        heart.style.animationDuration = (8 + Math.random() * 12) + 's';
+        heart.style.animationDelay = Math.random() * 10 + 's';
+        container.appendChild(heart);
+      }
+    }
+
+    // Escape button logic
+    function setupNoButton() {
+      const noBtn = document.getElementById('noBtn');
+      const card = document.querySelector('.card');
+      
+      function escapeButton(e) {
+        e.preventDefault();
+        const cardRect = card.getBoundingClientRect();
+        const btnRect = noBtn.getBoundingClientRect();
+        
+        const maxX = cardRect.width - btnRect.width - 40;
+        const maxY = 60;
+        
+        const randomX = (Math.random() - 0.5) * maxX;
+        const randomY = (Math.random() - 0.5) * maxY;
+        
+        noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        noBtn.style.transition = 'transform 0.2s ease-out';
+      }
+
+      noBtn.addEventListener('mouseenter', escapeButton);
+      noBtn.addEventListener('touchstart', escapeButton, { passive: false });
+    }
+
+    // Show love screen
+    function showLove() {
+      document.getElementById('questionScreen').classList.add('hidden');
+      document.getElementById('loveScreen').classList.add('active');
+      
+      // Add extra hearts celebration
+      const container = document.getElementById('heartsContainer');
+      for (let i = 0; i < 20; i++) {
+        setTimeout(() => {
+          const heart = document.createElement('div');
+          heart.className = 'floating-heart';
+          heart.textContent = ['💖', '💕', '💗', '💘'][Math.floor(Math.random() * 4)];
+          heart.style.left = Math.random() * 100 + '%';
+          heart.style.fontSize = (20 + Math.random() * 20) + 'px';
+          heart.style.animationDuration = (6 + Math.random() * 6) + 's';
+          heart.style.animationDelay = '0s';
+          container.appendChild(heart);
+        }, i * 100);
+      }
+    }
+
+    // Initialize
+    createHearts();
+    setupNoButton();
+  </script>
+</body>
+</html>
