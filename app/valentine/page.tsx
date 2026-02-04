@@ -199,7 +199,7 @@ export default function ValentinePage() {
             <div className="flex max-w-md flex-col items-center text-center lg:items-start lg:text-left">
               <div className="mb-4 animate-bounce text-5xl md:text-6xl">💕</div>
               <h1 className="mb-4 bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 bg-clip-text text-4xl font-bold tracking-tight text-transparent md:text-5xl lg:text-6xl">
-                YAY!!!
+                YAY Kunal!!!
               </h1>
               <p className="text-base leading-relaxed text-rose-700/80 md:text-lg lg:text-xl">
                 From today, you&apos;re officially my Valentine
